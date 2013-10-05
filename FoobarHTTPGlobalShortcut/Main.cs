@@ -39,6 +39,9 @@ namespace FoobarHTTPGlobalShortcut
             hotkeys.Add(new GlobalHotkey("Play", Constants.ALT + Constants.CTRL, Keys.P, this));
             hotkeys.Add(new GlobalHotkey("Random", Constants.ALT + Constants.CTRL, Keys.R, this));
             hotkeys.Add(new GlobalHotkey("Next", Constants.ALT + Constants.CTRL, Keys.N, this));
+
+            //This is a temporary fix for issue #1. Makes the delay happen at boot instead of at first user request.
+            webrequest("?cmd=P&param1=22");
         }
 
         protected override void WndProc(ref Message m)
