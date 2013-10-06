@@ -19,12 +19,13 @@ namespace FoobarHTTPGlobalShortcut
     {
         List<GlobalHotkey> hotkeys;
         string prefix;
+        
 
         public Main(string prefix)
         {
             InitializeComponent();
 
-
+            notifyIcon1.Icon = Properties.Resources.icon;
             this.prefix = prefix;
 #if debug
             string http = "http://";
@@ -133,6 +134,22 @@ namespace FoobarHTTPGlobalShortcut
             Properties.Settings.Default.Prefix = url.Url;
             Properties.Settings.Default.Save();
             prefix = url.Url;
+        }
+
+        private void Main_Resize(object sender, EventArgs e)
+        {
+
+            if (FormWindowState.Minimized == this.WindowState)
+            {
+                notifyIcon1.Visible = true;
+                this.Hide();
+            }
+        }
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
         }
 
         
