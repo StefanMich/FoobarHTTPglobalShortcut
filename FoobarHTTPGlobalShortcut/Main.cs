@@ -57,7 +57,7 @@ namespace FoobarHTTPGlobalShortcut
                     case Keys.N:
                         Next_Click(this, EventArgs.Empty);
                         break;
-                    case Keys.L:
+                    case Keys.R:
                         Random_Click(this, EventArgs.Empty);
                         break;
 
@@ -135,9 +135,6 @@ namespace FoobarHTTPGlobalShortcut
             prefix = url.Url;
         }
 
-        //TODO Taskbar 
-        //TODO Fetch foobar info - Current track, album art
-        //TODO Awesome interface
-        //TODO shortcut for volume
+        
     }
 }
