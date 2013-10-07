@@ -77,9 +77,19 @@ namespace FoobarHTTPGlobalShortcut
         {
             string url = prefix + suffix;
             WebRequest wr = WebRequest.Create(url);
-            WebResponse rs = wr.GetResponse();
-            Console.WriteLine(rs.ToString());
-            rs.Close();
+            WebResponse rs = null;
+            try
+            {
+                rs = wr.GetResponse();
+                Console.WriteLine(rs.ToString());
+                rs.Close();
+            }
+            catch (WebException e)
+            {
+                MessageBox.Show("Could not connect to " + prefix + "\nPlease check the IP and port and ensure that the host is able to accept connections");
+            }
+            
+            
         }
 
         private void PlayPause_Click(object sender, EventArgs e)
