@@ -33,8 +33,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.OK = new System.Windows.Forms.Button();
+            this.Cancel = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -70,7 +70,6 @@
             this.label2.Size = new System.Drawing.Size(26, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Port";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // panel1
             // 
@@ -83,24 +82,26 @@
             this.panel1.Size = new System.Drawing.Size(189, 69);
             this.panel1.TabIndex = 6;
             // 
-            // button1
+            // OK
             // 
-            this.button1.Location = new System.Drawing.Point(12, 103);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "OK";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.OK.Location = new System.Drawing.Point(12, 103);
+            this.OK.Name = "OK";
+            this.OK.Size = new System.Drawing.Size(75, 23);
+            this.OK.TabIndex = 7;
+            this.OK.Text = "OK";
+            this.OK.UseVisualStyleBackColor = true;
+            this.OK.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // Cancel
             // 
-            this.button2.Location = new System.Drawing.Point(126, 103);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Close";
-            this.button2.UseVisualStyleBackColor = true;
+            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel.Location = new System.Drawing.Point(126, 103);
+            this.Cancel.Name = "Cancel";
+            this.Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Cancel.TabIndex = 8;
+            this.Cancel.Text = "Cancel";
+            this.Cancel.UseVisualStyleBackColor = true;
+            this.Cancel.Click += new System.EventHandler(this.button2_Click);
             // 
             // label4
             // 
@@ -113,13 +114,14 @@
             // 
             // Choose_url
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.Cancel;
             this.ClientSize = new System.Drawing.Size(213, 130);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Cancel);
+            this.Controls.Add(this.OK);
             this.Controls.Add(this.panel1);
             this.Name = "Choose_url";
             this.Text = "Choose_url";
@@ -137,8 +139,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button OK;
+        private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.Label label4;
 
     }

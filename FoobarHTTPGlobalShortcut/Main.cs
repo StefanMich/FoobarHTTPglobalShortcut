@@ -19,7 +19,7 @@ namespace FoobarHTTPGlobalShortcut
     {
         List<GlobalHotkey> hotkeys;
         string prefix;
-        
+
 
         public Main(string prefix)
         {
@@ -41,8 +41,6 @@ namespace FoobarHTTPGlobalShortcut
             hotkeys.Add(new GlobalHotkey("Random", Constants.ALT + Constants.CTRL, Keys.R, this));
             hotkeys.Add(new GlobalHotkey("Next", Constants.ALT + Constants.CTRL, Keys.N, this));
 
-            //This is a temporary fix for issue #1. Makes the delay happen at boot instead of at first user request.
-            webrequest("?cmd=P&param1=22");
         }
 
         protected override void WndProc(ref Message m)
@@ -77,19 +75,19 @@ namespace FoobarHTTPGlobalShortcut
         {
             string url = prefix + suffix;
             WebRequest wr = WebRequest.Create(url);
+            wr.Proxy = null;
             WebResponse rs = null;
             try
             {
                 rs = wr.GetResponse();
-                Console.WriteLine(rs.ToString());
                 rs.Close();
             }
             catch (WebException e)
             {
                 MessageBox.Show("Could not connect to " + prefix + "\nPlease check the IP and port and ensure that the host is able to accept connections");
             }
-            
-            
+
+
         }
 
         private void PlayPause_Click(object sender, EventArgs e)
@@ -141,9 +139,12 @@ namespace FoobarHTTPGlobalShortcut
         {
             Choose_url url = new Choose_url();
             url.ShowDialog();
-            Properties.Settings.Default.Prefix = url.Url;
-            Properties.Settings.Default.Save();
-            prefix = url.Url;
+            if (url.DialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                Properties.Settings.Default.Prefix = url.Url;
+                Properties.Settings.Default.Save();
+                prefix = url.Url;
+            }
         }
 
         private void Main_Resize(object sender, EventArgs e)
@@ -162,6 +163,6 @@ namespace FoobarHTTPGlobalShortcut
             this.WindowState = FormWindowState.Normal;
         }
 
-        
+
     }
 }

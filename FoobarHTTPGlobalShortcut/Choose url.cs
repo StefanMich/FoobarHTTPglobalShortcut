@@ -23,17 +23,20 @@ namespace FoobarHTTPGlobalShortcut
             InitializeComponent();
         }
 
+
         private void button1_Click(object sender, EventArgs e)
         {
-            url = "http://" + IP.Text + ":" + Port.Text + "/default";
+            if (IP.Text != "" && Port.Text != "")
+            {
+                url = "http://" + IP.Text + ":" + Port.Text + "/default";
+                this.Close();
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Close();
         }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
     }
 }
