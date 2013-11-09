@@ -29,6 +29,7 @@ namespace FoobarHTTPGlobalShortcut
             if (IP.Text != "" && Port.Text != "")
             {
                 url = "http://" + IP.Text + ":" + Port.Text + "/default";
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
                 this.Close();
             }
         }

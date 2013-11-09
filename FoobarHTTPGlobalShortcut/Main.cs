@@ -10,7 +10,7 @@ using System.Net;
 using System.IO;
 using System.Runtime.InteropServices;
 using Stufkan.Forms;
-
+using HtmlAgilityPack;
 
 namespace FoobarHTTPGlobalShortcut
 {
@@ -21,6 +21,10 @@ namespace FoobarHTTPGlobalShortcut
         string prefix;
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Main"/> class.
+        /// </summary>
+        /// <param name="prefix">The prefix.</param>
         public Main(string prefix)
         {
             InitializeComponent();
@@ -76,6 +80,7 @@ namespace FoobarHTTPGlobalShortcut
             string url = prefix + suffix;
             WebRequest wr = WebRequest.Create(url);
             wr.Proxy = null;
+            wr.Timeout = 1000;
             WebResponse rs = null;
             try
             {
@@ -84,12 +89,33 @@ namespace FoobarHTTPGlobalShortcut
             }
             catch (WebException e)
             {
-                MessageBox.Show("Could not connect to " + prefix + "\nPlease check the IP and port and ensure that the host is able to accept connections");
+                MessageBox.Show("Could not connect to " + prefix + "\nPlease check the IP and port and ensure that the host is able to accept connections \nCurrent Timeout: " + wr.Timeout);
             }
-
-
         }
 
+        private HtmlAgilityPack.HtmlDocument getPage()
+        {
+            HttpWebRequest wr = WebRequest.Create(prefix) as HttpWebRequest;
+            wr.Proxy = null;
+
+            wr.GetResponse();
+
+            StreamReader responseReader = new StreamReader(wr.GetResponse().GetResponseStream());
+
+            string response = responseReader.ReadToEnd();
+            responseReader.Close();
+
+            HtmlAgilityPack.HtmlDocument htmldocument = new HtmlAgilityPack.HtmlDocument();
+            htmldocument.LoadHtml(response);
+            return htmldocument;
+        }
+
+        private HtmlNodeCollection getNodes(HtmlAgilityPack.HtmlDocument page)
+        {
+            //HtmlNodeCollection nodes = page.DocumentNode.SelectNodes("//table[@id='pl']//tr[@class='t']");
+            return page.DocumentNode.SelectNodes("//table[@id='pl']//tr");
+        }
+ 
         private void PlayPause_Click(object sender, EventArgs e)
         {
             webrequest("?cmd=PlayOrPause&param1=");
@@ -161,6 +187,29 @@ namespace FoobarHTTPGlobalShortcut
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            HtmlAgilityPack.HtmlDocument page = getPage();
+
+            HtmlNodeCollection nodes = getNodes(page);
+            nodes.Remove(nodes.Last());
+
+            foreach (var item in nodes)
+            {
+
+                Console.WriteLine(parseNode(item));
+            }
+        }
+
+        private Track parseNode(HtmlNode node)
+        {
+            string idString = node.Attributes[0].Value;
+            string s = idString.Substring(3,idString.Length-5);
+            int id = int.Parse(s);
+            return new Track(node.ChildNodes[0].InnerText, node.ChildNodes[1].InnerText, id);
+            
         }
 
 

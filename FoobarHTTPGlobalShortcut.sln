@@ -5,11 +5,6 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoobarHTTPGlobalShortcut", "FoobarHTTPGlobalShortcut\FoobarHTTPGlobalShortcut.csproj", "{90400C3C-07E4-487B-BEFA-AB02A0088E79}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E97E54C2-892F-4926-9958-4AEAE5D2C262}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
