@@ -18,7 +18,7 @@ namespace FoobarHTTPGlobalShortcut
     public partial class Main : Form
     {
         List<GlobalHotkey> hotkeys;
-        string prefix;
+        
 
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace FoobarHTTPGlobalShortcut
             InitializeComponent();
 
             notifyIcon1.Icon = Properties.Resources.icon;
-            this.prefix = prefix;
+            Properties.Settings.Default.Prefix = prefix;
 #if debug
             string http = "http://";
             string ip = "192.168.1.3";
@@ -75,70 +75,31 @@ namespace FoobarHTTPGlobalShortcut
             return (Keys)((LParam.ToInt32()) >> 16); // not all of the parenthesis are needed, I just found it easier to see what's happening
         }
 
-        private void webrequest(string suffix)
-        {
-            string url = prefix + suffix;
-            WebRequest wr = WebRequest.Create(url);
-            wr.Proxy = null;
-            wr.Timeout = 1000;
-            WebResponse rs = null;
-            try
-            {
-                rs = wr.GetResponse();
-                rs.Close();
-            }
-            catch (WebException e)
-            {
-                MessageBox.Show("Could not connect to " + prefix + "\nPlease check the IP and port and ensure that the host is able to accept connections \nCurrent Timeout: " + wr.Timeout);
-            }
-        }
-
-        private HtmlAgilityPack.HtmlDocument getPage()
-        {
-            HttpWebRequest wr = WebRequest.Create(prefix) as HttpWebRequest;
-            wr.Proxy = null;
-
-            wr.GetResponse();
-
-            StreamReader responseReader = new StreamReader(wr.GetResponse().GetResponseStream());
-
-            string response = responseReader.ReadToEnd();
-            responseReader.Close();
-
-            HtmlAgilityPack.HtmlDocument htmldocument = new HtmlAgilityPack.HtmlDocument();
-            htmldocument.LoadHtml(response);
-            return htmldocument;
-        }
-
-        private HtmlNodeCollection getNodes(HtmlAgilityPack.HtmlDocument page)
-        {
-            //HtmlNodeCollection nodes = page.DocumentNode.SelectNodes("//table[@id='pl']//tr[@class='t']");
-            return page.DocumentNode.SelectNodes("//table[@id='pl']//tr");
-        }
+        
  
         private void PlayPause_Click(object sender, EventArgs e)
         {
-            webrequest("?cmd=PlayOrPause&param1=");
+            HttpController.webrequest("?cmd=PlayOrPause&param1=");
         }
 
         private void Random_Click(object sender, EventArgs e)
         {
-            webrequest("?cmd=StartRandom&param1=");
+            HttpController.webrequest("?cmd=StartRandom&param1=");
         }
 
         private void Next_Click(object sender, EventArgs e)
         {
-            webrequest("?cmd=StartNext&param1=");
+            HttpController.webrequest("?cmd=StartNext&param1=");
         }
 
         private void Mute_Click(object sender, EventArgs e)
         {
-            webrequest("?cmd=VolumeMuteToggle");
+            HttpController.webrequest("?cmd=VolumeMuteToggle");
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            webrequest("?cmd=Volume&param1=" + numericUpDown1.Value);
+            HttpController.webrequest("?cmd=Volume&param1=" + numericUpDown1.Value);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -169,7 +130,7 @@ namespace FoobarHTTPGlobalShortcut
             {
                 Properties.Settings.Default.Prefix = url.Url;
                 Properties.Settings.Default.Save();
-                prefix = url.Url;
+                
             }
         }
 
@@ -191,27 +152,17 @@ namespace FoobarHTTPGlobalShortcut
 
         private void button5_Click(object sender, EventArgs e)
         {
-            HtmlAgilityPack.HtmlDocument page = getPage();
+            HtmlAgilityPack.HtmlDocument page = HttpController.getPage();
 
-            HtmlNodeCollection nodes = getNodes(page);
+            HtmlNodeCollection nodes = HttpController.getNodes(page);
             nodes.Remove(nodes.Last());
 
             foreach (var item in nodes)
             {
 
-                Console.WriteLine(parseNode(item));
+                Console.WriteLine(Track.parseNode(item));
             }
         }
-
-        private Track parseNode(HtmlNode node)
-        {
-            string idString = node.Attributes[0].Value;
-            string s = idString.Substring(3,idString.Length-5);
-            int id = int.Parse(s);
-            return new Track(node.ChildNodes[0].InnerText, node.ChildNodes[1].InnerText, id);
-            
-        }
-
 
     }
 }

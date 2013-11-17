@@ -61,6 +61,7 @@
     <Compile Include="Choose url.Designer.cs">
       <DependentUpon>Choose url.cs</DependentUpon>
     </Compile>
+    <Compile Include="HttpController.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

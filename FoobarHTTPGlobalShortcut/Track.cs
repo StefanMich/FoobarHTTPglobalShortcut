@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace FoobarHTTPGlobalShortcut
 {
@@ -39,6 +40,14 @@ namespace FoobarHTTPGlobalShortcut
             this.id = id;
         }
 
+        public static Track parseNode(HtmlNode node)
+        {
+            string idString = node.Attributes[0].Value;
+            string s = idString.Substring(3, idString.Length - 5);
+            int id = int.Parse(s);
+            return new Track(node.ChildNodes[0].InnerText, node.ChildNodes[1].InnerText, id);
+
+        }
         public override string ToString()
         {
             return id + " " + title + " " + duration + " ";
